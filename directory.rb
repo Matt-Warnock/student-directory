@@ -106,7 +106,7 @@ def interactive_menu
 end
 
 def print_menu
-  puts "1. Input the students\n2. Show the students\n3. Save the list to students\n9. Exit"
+  puts "1. Input the students\n2. Show the students\n3. Save students list\n4. Load Student list\n9. Exit"
 end
 
 def process(user_choice) # rubocop:disable Metrics/MethodLength
@@ -118,6 +118,9 @@ def process(user_choice) # rubocop:disable Metrics/MethodLength
   when '3'
     save_students
     puts 'Students file save completed'
+  when '4'
+    load_student
+    puts 'Students file loaded'
   when '9'
     exit
   else
@@ -138,6 +141,18 @@ def save_students
     csv_line = student.values.join(',')
 
     file.puts csv_line
+  end
+  file.close
+end
+
+def load_student
+  file = File.open('students.csv', 'r')
+
+  file.readlines.each do |line|
+    name, cohort, favorite_animal, height = line.chomp.split(',')
+    @students << {
+      name: name, cohort: cohort.to_sym, favorite_animal: favorite_animal, height: height
+    }
   end
   file.close
 end
