@@ -8,7 +8,7 @@ MENU = [
   '2. Show all students',
   '3. Show students by cohort',
   '4. Save students list',
-  '4. Load Student list',
+  '5. Load Student list',
   '9. Exit'
 ].freeze
 
