@@ -26,7 +26,7 @@ KEY_TO_REGEX = {
 def input_students
   puts "Please enter the name of the student: \n(To finish, hit return twice)"
 
-  name = gets.chomp
+  name = $stdin.gets.chomp
   collect_students(name)
 end
 
@@ -39,7 +39,7 @@ def collect_students(name)
     }
 
     students_so_far(@students.count)
-    name = gets.chomp
+    name = $stdin.gets.chomp
   end
 end
 
@@ -56,7 +56,7 @@ end
 
 def collect_vaild_input(key)
   loop do
-    user_input = gets.chomp
+    user_input = $stdin.gets.chomp
     break user_input if user_input.match(KEY_TO_REGEX[key])
   end
 end
@@ -101,7 +101,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process($stdin.gets.chomp)
   end
 end
 
@@ -145,8 +145,8 @@ def save_students
   file.close
 end
 
-def load_student
-  file = File.open('students.csv', 'r')
+def load_student(filename = 'students.csv')
+  file = File.open(filename, 'r')
 
   file.readlines.each do |line|
     name, cohort, favorite_animal, height = line.chomp.split(',')
@@ -157,4 +157,18 @@ def load_student
   file.close
 end
 
+def try_load_file
+  filename = ARGV.first
+  return if filename.nil?
+
+  if File.exist?(filename)
+    load_student(filename)
+    puts "Loaded #{@students.count} students from #{filename}"
+  else
+    puts "Sorry #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_file
 interactive_menu
